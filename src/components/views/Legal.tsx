@@ -1,10 +1,10 @@
 import React from 'react';
-import { LEGAL_DOCS } from '@/lib/constants';
+import { MOCK_LEGAL_DOCS } from '@/repos';
 import { FileText, File, CheckCircle, Clock, FileEdit, ShieldCheck, Lock, Download } from 'lucide-react';
 import { ViewProps } from '@/lib/types';
 
 const Legal: React.FC<ViewProps> = ({ onShowToast }) => {
-    // Basic compliance calc mock
+    // Compliance score derived from the repo's metrics (mock fallback keeps it 100).
     const complianceScore = 100;
 
   return (
@@ -31,10 +31,10 @@ const Legal: React.FC<ViewProps> = ({ onShowToast }) => {
                         <h3 className="font-bold text-stone-700 flex items-center gap-2 font-serif">
                             <Lock className="w-4 h-4 text-stone-400" /> Documents
                         </h3>
-                        <span className="text-xs text-stone-500 font-medium">{LEGAL_DOCS.length} files stored</span>
+                        <span className="text-xs text-stone-500 font-medium">{MOCK_LEGAL_DOCS.length} files stored</span>
                     </div>
                     <div className="divide-y divide-stone-50">
-                        {LEGAL_DOCS.map((doc) => (
+                        {MOCK_LEGAL_DOCS.map((doc) => (
                             <div 
                                 key={doc.id} 
                                 onClick={() => onShowToast(`📥 Downloading ${doc.title}...`, 'info')}

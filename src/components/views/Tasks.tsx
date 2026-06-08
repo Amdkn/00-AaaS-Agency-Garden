@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { TASKS } from '@/lib/constants';
+import { MOCK_TASKS } from '@/repos';
 import { Check, Calendar, ExternalLink, Filter } from 'lucide-react';
 import { ViewProps, Task } from '@/lib/types';
 
 const Tasks: React.FC<ViewProps> = ({ onShowToast }) => {
   const [tasks, setTasks] = useState<Task[]>(() => {
-    if (typeof window === 'undefined') return TASKS;
+    const initial: ReadonlyArray<Task> = MOCK_TASKS;
+    if (typeof window === 'undefined') return [...initial];
     const localTasks = window.localStorage.getItem('aspace_tasks');
-    if (!localTasks) return TASKS;
+    if (!localTasks) return [...initial];
 
     try {
       return JSON.parse(localTasks) as Task[];
     } catch {
-      return TASKS;
+      return [...initial];
     }
   });
   // Save to localStorage when tasks change

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TEAM_MEMBERS, ROLE_ALLOCATIONS } from '@/lib/constants';
+import { MOCK_TEAM_MEMBERS, MOCK_ROLE_ALLOCATIONS } from '@/repos';
 import { Users, Shield, Cpu, Zap, AlertCircle } from 'lucide-react';
 
 const People: React.FC = () => {
@@ -25,7 +25,7 @@ const People: React.FC = () => {
                 Capacity Load
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {TEAM_MEMBERS.map((member) => (
+                {MOCK_TEAM_MEMBERS.map((member) => (
                     <div key={member.id} className="bg-white border border-stone-200 p-6 rounded-3xl relative overflow-hidden group hover:border-emerald-200 hover:shadow-lg transition-all shadow-md shadow-stone-200/50">
                         
                         {/* Type Badge */}
@@ -100,7 +100,7 @@ const People: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-stone-100">
-                        {ROLE_ALLOCATIONS.map((role) => (
+                        {MOCK_ROLE_ALLOCATIONS.map((role) => (
                             <tr key={role.id} className="hover:bg-emerald-50/30 transition-colors">
                                 <td className="px-6 py-4 font-bold text-stone-700 font-serif">{role.domain}</td>
                                 <td className="px-6 py-4">

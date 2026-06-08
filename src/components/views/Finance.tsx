@@ -1,5 +1,6 @@
 import React from 'react';
-import { FINANCE_KPI_CARDS, TRANSACTIONS, CLIENT_PROFILES } from '@/lib/constants';
+import { MOCK_FINANCE_KPIS, MOCK_TRANSACTIONS } from '@/repos';
+import { MOCK_CLIENTS } from '@/repos';
 import { Plus, Download, ArrowUpRight, ArrowDownLeft, FileText, Send } from 'lucide-react';
 import { ViewProps } from '@/lib/types';
 
@@ -11,7 +12,7 @@ const Finance: React.FC<ViewProps> = ({ onShowToast, onOpenModal }) => {
             <div>
                 <label className="block text-sm font-medium text-stone-700 mb-2">Select Client</label>
                 <div className="space-y-2">
-                    {CLIENT_PROFILES.slice(0, 3).map(client => (
+                    {MOCK_CLIENTS.slice(0, 3).map(client => (
                         <div key={client.id} className="flex items-center gap-3 p-3 rounded-xl border border-stone-200 hover:border-emerald-500 cursor-pointer bg-stone-50 hover:bg-emerald-50 transition-colors">
                             <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-xs font-bold text-emerald-800">
                                 {client.logo}
@@ -71,7 +72,7 @@ const Finance: React.FC<ViewProps> = ({ onShowToast, onOpenModal }) => {
 
         {/* KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {FINANCE_KPI_CARDS.map((kpi) => (
+            {MOCK_FINANCE_KPIS.map((kpi) => (
                 <div key={kpi.id} className="bg-white border border-stone-100 p-6 rounded-3xl hover:shadow-soft transition-all">
                      <div className="flex justify-between items-start mb-4">
                         <span className="text-sm font-medium text-stone-400 font-sans uppercase tracking-wider">{kpi.label}</span>
@@ -115,7 +116,7 @@ const Finance: React.FC<ViewProps> = ({ onShowToast, onOpenModal }) => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-stone-100">
-                        {TRANSACTIONS.map((tx) => (
+                        {MOCK_TRANSACTIONS.map((tx) => (
                             <tr key={tx.id} className="group hover:bg-stone-50 transition-colors">
                                 <td className="px-6 py-4 whitespace-nowrap font-mono text-xs text-stone-400">{tx.date}</td>
                                 <td className="px-6 py-4">

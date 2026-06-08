@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Settings as SettingsIcon, UploadCloud, CreditCard, Palette, Layout, Crown } from 'lucide-react';
 import { ViewProps } from '@/lib/types';
+import { MOCK_BRANDING, MOCK_SUBSCRIPTION } from '@/repos';
 
 const Settings: React.FC<ViewProps> = ({ onShowToast }) => {
   const [activeTab, setActiveTab] = useState<'branding' | 'subscription'>('branding');
-  const [primaryColor, setPrimaryColor] = useState('#059669');
+  const [primaryColor, setPrimaryColor] = useState<string>(MOCK_BRANDING.primaryColor);
 
   return (
     <div className="space-y-6 animate-fade-in pb-10">
@@ -56,17 +57,17 @@ const Settings: React.FC<ViewProps> = ({ onShowToast }) => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-stone-700">Agency Name</label>
-                                <input 
-                                    type="text" 
-                                    defaultValue="A'Space Agency" 
+                                <input
+                                    type="text"
+                                    defaultValue={MOCK_BRANDING.agencyName}
                                     className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-stone-800 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-200 transition-all shadow-inner"
                                 />
                             </div>
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-stone-700">Slogan / Tagline</label>
-                                <input 
-                                    type="text" 
-                                    defaultValue="Future of Work" 
+                                <input
+                                    type="text"
+                                    defaultValue={MOCK_BRANDING.slogan}
                                     className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-stone-800 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-200 transition-all shadow-inner"
                                 />
                             </div>
@@ -133,11 +134,11 @@ const Settings: React.FC<ViewProps> = ({ onShowToast }) => {
                                     <Crown className="w-5 h-5 text-amber-400" />
                                     <span className="text-sm font-bold text-amber-400 uppercase tracking-wider">Current Plan</span>
                                 </div>
-                                <h3 className="text-2xl font-bold font-serif">Tier 2: Sovereign Box</h3>
+                                <h3 className="text-2xl font-bold font-serif">{MOCK_SUBSCRIPTION.tier}</h3>
                                 <p className="text-sm text-stone-400 mt-1">Includes 5 AI Agents, Unlimited SOPs, and Priority Support.</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-3xl font-bold">€199</span>
+                                <span className="text-3xl font-bold">€{MOCK_SUBSCRIPTION.monthlyPrice}</span>
                                 <span className="text-stone-400">/mo</span>
                             </div>
                         </div>
@@ -163,8 +164,8 @@ const Settings: React.FC<ViewProps> = ({ onShowToast }) => {
                                     <CreditCard className="w-5 h-5 text-stone-600" />
                                 </div>
                                 <div>
-                                    <p className="text-sm font-bold text-stone-800">Visa ending in 4242</p>
-                                    <p className="text-xs text-stone-500">Expires 12/25</p>
+                                    <p className="text-sm font-bold text-stone-800">{MOCK_SUBSCRIPTION.paymentMethod.brand} ending in {MOCK_SUBSCRIPTION.paymentMethod.last4}</p>
+                                    <p className="text-xs text-stone-500">Expires {MOCK_SUBSCRIPTION.paymentMethod.expiry}</p>
                                 </div>
                             </div>
                             <button className="text-xs font-bold text-emerald-600 hover:text-emerald-700">

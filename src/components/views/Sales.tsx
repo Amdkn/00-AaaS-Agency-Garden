@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { ViewProps } from '@/lib/types';
-import { 
-  ShieldCheck, 
-  Zap, 
-  Terminal, 
-  Users, 
-  TrendingUp, 
-  Clock, 
-  Euro, 
-  Mail, 
-  Eye, 
+import {
+  ShieldCheck,
+  Zap,
+  Terminal,
+  Users,
+  TrendingUp,
+  Clock,
+  Euro,
+  Mail,
+  Eye,
   ArrowRight,
   UserCheck,
   CheckCircle2,
@@ -27,40 +27,37 @@ import {
   Ghost
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import {
+  MOCK_SALES_INBOX,
+  MOCK_SALES_AGENT_STATUS,
+  MOCK_SALES_PIPELINE,
+} from '@/repos';
 
 const Sales: React.FC<ViewProps> = ({ onShowToast, onOpenModal }) => {
   const [activeTab, setActiveTab] = useState<'pipeline' | 'logs'>('pipeline');
 
-  // KPI Data
+  // KPI Data (vitals are view-local in Phase D — these come from the
+  // dashboard metrics repo in a future phase).
   const vitals = [
     { label: 'Closing Rate', value: '84.2%', trend: '+4.1%', icon: TrendingUp },
     { label: 'Avg. Time-to-Close', value: '3.2 Days', trend: '-12%', icon: Clock },
     { label: 'MTD Revenue Locked', value: '€142,500', trend: '+22%', icon: Euro },
   ];
 
-  // Agent Data
-  const agents = [
-    { name: 'Dr. Strange', role: 'Drafting Audits', status: 'Active', icon: Brain },
-    { name: 'Iron Man', role: 'Generating UI Demos', status: 'Active', icon: Cpu },
-    { name: 'Black Panther', role: 'Drafting Contracts', status: 'Idle', icon: ShieldCheck },
-    { name: 'Namor', role: 'Filtering Intent', status: 'Processing', icon: Activity },
-  ];
+  // Agent Data — sourced from the sales repo (typed accessors).
+  const agentIconMap = { Brain, Cpu, ShieldCheck, Activity } as const;
+  const agents = MOCK_SALES_AGENT_STATUS.map((a) => ({
+    name: a.name,
+    role: a.role,
+    status: a.status,
+    icon: agentIconMap[a.iconName],
+  }));
 
-  // Inbox Data
-  const inbox = [
-    { id: '1', name: 'Alaric Chen', agency: 'Nebula Scale', bleed: '4,200', bottleneck: 'Manual Lead Scoring' },
-    { id: '2', name: 'Sarah Jenkins', agency: 'Zenith SEO', bleed: '12,500', bottleneck: 'Unoptimized Outbound' },
-    { id: '3', name: 'Marcus Thorne', agency: 'Crimson Creative', bleed: '8,900', bottleneck: 'Client Service Bottleneck' },
-    { id: '4', name: 'Elena Vost', agency: 'Alpha Dev', bleed: '6,100', bottleneck: 'Low LTV Retention' },
-  ];
+  // Inbox Data — sourced from the sales repo.
+  const inbox = MOCK_SALES_INBOX;
 
-  // Pipeline Data
-  const columns = [
-    { title: 'Audit Sent', items: [{ id: 'p1', name: 'Nebula Scale', sub: 'Audit Delivered 2h ago' }] },
-    { title: 'Demo Vault Active', items: [{ id: 'p2', name: 'Zenith SEO', sub: 'Active session (4m ago)' }] },
-    { title: 'Proposal / Contract Sent', items: [{ id: 'p3', name: 'Alpha Dev', sub: 'Pending signature' }] },
-    { title: 'Awaiting Stripe Deposit', items: [{ id: 'p4', name: 'Crimson Creative', sub: 'Stripe Invoice View' }] },
-  ];
+  // Pipeline Data — sourced from the sales repo.
+  const columns = MOCK_SALES_PIPELINE;
 
   const handleReviewAudit = (name: string) => {
     onShowToast(`Dr. Strange: Audit for ${name} reviewed and approved for delivery.`, 'success');

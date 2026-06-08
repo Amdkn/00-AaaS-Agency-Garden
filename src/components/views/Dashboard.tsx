@@ -1,6 +1,6 @@
 import React from 'react';
 import { KPI, Alert, ViewProps } from '@/lib/types';
-import { KPIS, ALERTS, CLIENT_WIDGETS } from '@/lib/constants';
+import { MOCK_KPIS, MOCK_ALERTS, MOCK_CLIENT_WIDGETS } from '@/repos';
 import { TrendingUp, TrendingDown, Minus, AlertTriangle, AlertCircle, Info, ArrowRight, Sprout, CreditCard, Sparkles, Wind } from 'lucide-react';
 
 const TrendIcon = ({ trend }: { trend: KPI['trend'] }) => {
@@ -44,7 +44,7 @@ const Dashboard: React.FC<ViewProps> = ({ onShowToast }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {KPIS.map((kpi) => (
+            {MOCK_KPIS.map((kpi) => (
             <div key={kpi.id} className="bg-white p-6 rounded-3xl shadow-soft hover:shadow-lg transition-all duration-300 border border-transparent hover:border-emerald-100 group">
                 <div className="flex justify-between items-start mb-4">
                     <span className="text-sm font-medium text-stone-500 font-sans uppercase tracking-wide">{kpi.label}</span>
@@ -86,7 +86,7 @@ const Dashboard: React.FC<ViewProps> = ({ onShowToast }) => {
             </div>
             <div className="bg-white rounded-3xl shadow-soft overflow-hidden border border-stone-50">
                 <div className="divide-y divide-stone-100">
-                    {ALERTS.map((alert) => (
+                    {MOCK_ALERTS.map((alert) => (
                         <div key={alert.id} className="p-5 flex items-center justify-between group hover:bg-stone-50 transition-colors">
                             <div className="flex items-center space-x-5">
                                 <div className={`flex-shrink-0 p-3 rounded-2xl ${
@@ -130,7 +130,7 @@ const Dashboard: React.FC<ViewProps> = ({ onShowToast }) => {
                         <span className="text-xs font-bold text-stone-400 uppercase tracking-widest">Active Roots</span>
                     </div>
                     <div className="space-y-3">
-                        {CLIENT_WIDGETS.map(client => (
+                        {MOCK_CLIENT_WIDGETS.map(client => (
                             <div 
                                 key={client.id} 
                                 onClick={() => handleWidgetClick(client.name)}

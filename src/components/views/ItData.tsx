@@ -1,5 +1,5 @@
 import React from 'react';
-import { STACK_CONNECTIONS } from '@/lib/constants';
+import { MOCK_STACK_CONNECTIONS } from '@/repos';
 import { Server, Database, Activity, Wifi, Shield, HardDrive, RefreshCw } from 'lucide-react';
 
 const ItData: React.FC = () => {
@@ -25,7 +25,7 @@ const ItData: React.FC = () => {
                 Stack Connectivity
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {STACK_CONNECTIONS.map((conn) => (
+                {MOCK_STACK_CONNECTIONS.map((conn) => (
                     <div key={conn.id} className="bg-white border border-stone-200 p-5 rounded-3xl flex flex-col justify-between hover:border-emerald-300 hover:shadow-lg transition-all group shadow-md shadow-stone-200/50">
                         
                         <div className="flex justify-between items-start mb-4">

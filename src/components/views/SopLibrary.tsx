@@ -1,5 +1,5 @@
 import React from 'react';
-import { SOPS } from '@/lib/constants';
+import { MOCK_SOPS } from '@/repos';
 import { Lock, FileText, UserPlus, Target, Terminal, LogOut, ShieldAlert, Search, BookOpen } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { ViewProps } from '@/lib/types';
@@ -88,7 +88,7 @@ const SopLibrary: React.FC<ViewProps> = ({ onOpenModal, onShowToast }) => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SOPS.map((sop) => {
+            {MOCK_SOPS.map((sop) => {
                 const Icon = IconMap[sop.iconName] || FileText;
                 return (
                     <div key={sop.id} className="group relative bg-white border border-stone-100 rounded-3xl p-6 hover:border-emerald-100 transition-all hover:shadow-soft hover:-translate-y-1">

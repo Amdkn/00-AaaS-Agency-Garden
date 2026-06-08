@@ -1,9 +1,9 @@
 import React from 'react';
-import { LEADS } from '@/lib/constants';
+import { MOCK_LEADS } from '@/repos';
 import { Lead, ViewProps } from '@/lib/types';
 import { MoreHorizontal, Plus } from 'lucide-react';
 
-const Column = ({ title, status, leads, color }: { title: string, status: Lead['status'], leads: Lead[], color: string }) => {
+const Column = ({ title, status, leads, color }: { title: string, status: Lead['status'], leads: ReadonlyArray<Lead>, color: string }) => {
     const columnLeads = leads.filter(l => l.status === status);
     
     return (
@@ -90,22 +90,22 @@ const Growth: React.FC<ViewProps> = ({ onOpenModal, onShowToast }) => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 overflow-x-auto pb-4">
-            <Column 
-                title="Leads (Inbound)" 
-                status="Lead" 
-                leads={LEADS} 
+            <Column
+                title="Leads (Inbound)"
+                status="Lead"
+                leads={MOCK_LEADS}
                 color="bg-stone-50"
             />
-            <Column 
-                title="In Discussion" 
-                status="In Discussion" 
-                leads={LEADS} 
+            <Column
+                title="In Discussion"
+                status="In Discussion"
+                leads={MOCK_LEADS}
                 color="bg-amber-50"
             />
-            <Column 
-                title="Won (Signed)" 
-                status="Won" 
-                leads={LEADS} 
+            <Column
+                title="Won (Signed)"
+                status="Won"
+                leads={MOCK_LEADS}
                 color="bg-emerald-50"
             />
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MARKETPLACE_ITEMS } from '@/lib/constants';
+import { MOCK_LISTINGS } from '@/repos';
 import { CreditCard, Star, Package, CheckCircle } from 'lucide-react';
 import { ViewProps } from '@/lib/types';
 
@@ -12,7 +12,7 @@ const Marketplace: React.FC<ViewProps> = ({ onShowToast }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {MARKETPLACE_ITEMS.map((item) => (
+            {MOCK_LISTINGS.map((item) => (
                 <div key={item.id} className="bg-white border border-stone-100 rounded-3xl p-8 flex flex-col hover:border-emerald-200 hover:shadow-lg transition-all relative overflow-hidden group">
                     
                     {/* Decorative Background Glow */}

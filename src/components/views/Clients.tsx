@@ -1,5 +1,5 @@
 import React from 'react';
-import { CLIENT_PROFILES } from '@/lib/constants';
+import { MOCK_CLIENTS } from '@/repos';
 import { Search, Filter, MoreVertical, Phone, Mail, Box, Activity } from 'lucide-react';
 import { ViewProps } from '@/lib/types';
 
@@ -35,7 +35,7 @@ const Clients: React.FC<ViewProps> = ({ onShowToast }) => {
 
         {/* Client Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {CLIENT_PROFILES.map((client) => (
+            {MOCK_CLIENTS.map((client) => (
                 <div key={client.id} className="bg-white border border-stone-100 rounded-3xl p-6 hover:border-emerald-100 transition-all hover:shadow-soft hover:-translate-y-1 group">
                     
                     {/* Card Header */}
