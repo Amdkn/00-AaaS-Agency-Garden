@@ -120,17 +120,56 @@ CREATE POLICY tenant_isolation ON solaris_saas.clients
 
 > Phase A est FOUNDATION ONLY : les mocks dans `src/lib/constants.ts` restent intacts. Les 12 views ne sont pas modifiées. On NE migre PAS les données. On NE touche PAS au VPS.
 
-### Phase B — Auth flow (LOCAL)
-1. `src/app/signin/page.tsx` + `src/app/signup/page.tsx` (saas, crée une org au signup).
-2. `<AuthProvider>` + `useAuth()` (session, user, org, membership).
-3. Logout (server action).
-4. Remplacer le "Admin User" hardcodé par la session réelle (si présent dans le futur header).
+### Phase B — Auth flow (LOCAL) ✅
+1. ✅ `src/app/auth/actions.ts` — `signIn` / `signUp` / `signOut` server actions (uses `createSupabaseServerClient`, schema-aware).
+2. ✅ `src/app/auth/signin/page.tsx` — form with `useActionState`, redirects to `/dashboard` on success.
+3. ✅ `src/app/auth/signup/page.tsx` — form collects org name in saas mode, redirects to `/auth/check-email`.
+4. ✅ `src/app/auth/check-email/page.tsx` — post-signup confirmation prompt.
+5. ✅ `src/app/auth/callback/route.ts` — OAuth / magic-link / email-confirm `GET` handler (exchanges `code` for session).
+6. ✅ `src/app/auth/signout/route.ts` — JSON `POST` sign-out endpoint.
+7. ✅ `src/components/auth/AuthProvider.tsx` — client-side context mirroring Supabase auth state.
+8. ✅ `src/components/auth/useAuth.ts` — consumer hook (throws outside provider).
+9. ✅ `src/app/layout.tsx` updated to wrap `<AuthProvider>{children}</AuthProvider>`.
+10. ✅ `src/middleware.ts` updated: protected routes redirect to `/auth/signin`, signed-in users on auth pages go to `/dashboard`.
 
-### Phase C — RLS + custom access token hook (LOCAL draft, BYPASS apply)
-1. `supabase/migrations/0001_solaris_saas_organizations.sql` (draft local).
-2. `supabase/migrations/0002_solaris_saas_tenant_isolation.sql` (RLS par table).
-3. Custom access token hook (`memberships` → `org_id` dans JWT) — DRAFT en local, APPLY via MCP `supabase-aspace` (canal bypass).
-4. Middleware : lit `auth.jwt().org_id`, injecte `x-tenant-org-id` pour Server Components.
+> Phase B keeps the 12 views on mocks. The dashboard home (`/`) is still reachable without auth in this phase — the route gate applies once each view is moved to its own URL (a Phase D-DX polish task). Auth itself works locally once `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set in `.env.local`.
+
+### Phase C — RLS + custom access token hook (LOCAL draft, BYPASS apply) ✅
+1. ✅ `supabase/migrations/0001_init_schemas.sql` — `solaris_internal` + `solaris_saas` schemas (draft, apply via VPS).
+2. ✅ `supabase/migrations/0002_solaris_saas_tables.sql` — `organizations`, `memberships`, `profiles` tables in `solaris_saas`.
+3. ✅ `supabase/migrations/0003_solaris_saas_rls.sql` — RLS policies (org_id-claim based) for the saas tables.
+4. ✅ `supabase/migrations/0004_solaris_internal_tables.sql` — `staff_users`, `audit_logs` in `solaris_internal`.
+5. ✅ `supabase/migrations/0005_solaris_internal_rls.sql` — RLS for internal schema (role-based: admin / manager / agent).
+6. ✅ `supabase/migrations/0006_custom_access_token_hook.sql` — `public.custom_access_token_hook` function (DRAFT, `aspace_admin` role to apply).
+7. ✅ `src/middleware.ts` reads `app_metadata.org_id` from the user and forwards it as `x-tenant-org-id`. In saas mode, a missing org_id on a protected route returns 403.
+8. ✅ `src/components/auth/useSessionContext.ts` — client-side `useSessionContext()` returning `{ session, user, orgId, role, isStaff, isSaas, isInternal, mode, loading }`.
+
+> Phase C is DRAFT ONLY locally. The SQL files have not been applied to a live database — that happens in Phase E via MCP `supabase-aspace` (BYPASS channel). The middleware stub for `x-tenant-org-id` works without the hook active (the value is just `null`).
+
+### What's in this PR (B + C)
+
+```
+src/app/auth/
+  ├── actions.ts                 (server actions: signIn / signUp / signOut)
+  ├── signin/page.tsx            (sign-in form)
+  ├── signup/page.tsx            (sign-up form)
+  ├── check-email/page.tsx       (post-signup confirmation page)
+  ├── callback/route.ts          (OAuth / email-confirm callback)
+  └── signout/route.ts           (JSON sign-out endpoint)
+src/components/auth/
+  ├── AuthProvider.tsx           (client-side auth context)
+  ├── useAuth.ts                 (consumer hook, throws outside provider)
+  └── useSessionContext.ts       (org_id / role / mode reader)
+src/app/layout.tsx               (updated to wrap <AuthProvider>)
+src/middleware.ts                (updated: protected routes, x-tenant-org-id, 403 gate)
+supabase/migrations/
+  ├── 0001_init_schemas.sql
+  ├── 0002_solaris_saas_tables.sql
+  ├── 0003_solaris_saas_rls.sql
+  ├── 0004_solaris_internal_tables.sql
+  ├── 0005_solaris_internal_rls.sql
+  └── 0006_custom_access_token_hook.sql
+```
 
 ### Phase D — Repositories + branchement views (LOCAL)
 1. `src/data/*.repo.ts` (findAll/create/update RLS-scoped) : `clients.repo.ts`, `tasks.repo.ts`, `leads.repo.ts`, `transactions.repo.ts`, `sops.repo.ts`, `agents.repo.ts`, `legal.repo.ts`, `stack.repo.ts`.
